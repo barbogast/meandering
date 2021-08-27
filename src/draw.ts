@@ -17,13 +17,14 @@ export const draw = (state: State) => {
     drawRect('green', pos);
   }
 
-  for (const pos of state.snake) {
-    drawRect('black', pos);
-  }
-
-  if (!state.isAlive) {
-    // Draw over the head of the snake in red if it's dead, so the player knows
-    // where it died
-    drawRect('red', state.snake[state.snake.length - 1]);
+  for (const snake of state.snakes) {
+    for (const pos of snake.body) {
+      drawRect(snake.color, pos);
+    }
+    if (!snake.isAlive) {
+      // Draw over the head of the snake in red if it's dead, so the player knows
+      // where it died
+      drawRect('red', snake.body[snake.body.length - 1]);
+    }
   }
 };

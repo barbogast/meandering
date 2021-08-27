@@ -1,10 +1,10 @@
-import { Pos, State } from './types';
+import { Pos, Snake, State } from './types';
 import { randomIntFromInterval } from './utils';
 
-export const moveSnake = (state: State) => {
-  const currentHead = state.snake[state.snake.length - 1];
+export const moveSnake = (state: State, snake: Snake) => {
+  const currentHead = snake.body[snake.body.length - 1];
   let newHead: Pos;
-  switch (state.directions[0]) {
+  switch (snake.directions[0]) {
     case 'up': {
       newHead = { x: currentHead.x, y: currentHead.y - 1 };
       break;
@@ -46,27 +46,27 @@ export const moveSnake = (state: State) => {
          - don't remove tail so snake grows by one
       */
     state.apples = state.apples.filter((pos) => pos.x !== newHead.x || pos.y !== newHead.y);
-    state.snake.push(newHead);
+    snake.body.push(newHead);
     addApple(state);
   } else if (state.blocks.some((pos) => pos.x === newHead.x && pos.y === newHead.y)) {
     /* Snake hits block and dies: 
          - move one forward so the user sees which block was hit
          - kill snake
       */
-    state.snake.shift();
-    state.snake.push(newHead);
-    state.isAlive = false;
+    snake.body.shift();
+    snake.body.push(newHead);
+    snake.isAlive = false;
   } else {
     /* Snake moves forward: 
          - add new head
          - remove tail
       */
-    state.snake.shift();
-    state.snake.push(newHead);
+    snake.body.shift();
+    snake.body.push(newHead);
   }
 
-  if (state.directions.length > 1) {
-    state.directions.shift();
+  if (snake.directions.length > 1) {
+    snake.directions.shift();
   }
 };
 
@@ -81,7 +81,9 @@ export const addApple = (state: State) => {
     };
     if (
       !state.blocks.some((pos) => pos.x === apple.x && pos.y === apple.y) &&
-      !state.snake.some((pos) => pos.x === apple.x && pos.y === apple.y) &&
+      !state.snakes.some((snake) =>
+        snake.body.some((pos) => pos.x === apple.x && pos.y === apple.y)
+      ) &&
       !state.apples.some((pos) => pos.x === apple.x && pos.y === apple.y)
     ) {
       break;
