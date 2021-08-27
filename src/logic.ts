@@ -2,6 +2,9 @@ import { Pos, Snake, State } from './types';
 import { randomIntFromInterval } from './utils';
 
 export const moveSnake = (state: State, snake: Snake) => {
+  if (!snake.isAlive) {
+    return;
+  }
   const currentHead = snake.body[snake.body.length - 1];
   let newHead: Pos;
   switch (snake.directions[0]) {

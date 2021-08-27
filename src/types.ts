@@ -1,11 +1,16 @@
 export type Pos = { x: number; y: number };
 
+export type Control = 'arrow' | 'awsd' | 'ai';
+
+export type Direction = 'up' | 'down' | 'left' | 'right';
+
 export type Snake = {
   body: Pos[];
   // The player may do more than one key press before the current one is exectued
-  directions: ('up' | 'down' | 'left' | 'right')[];
+  directions: Direction[];
   isAlive: boolean;
   color: string;
+  control: Control;
 };
 
 export type State = {

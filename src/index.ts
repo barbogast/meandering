@@ -1,8 +1,8 @@
-import { canvas, INITIAL_APPLES, RECT_SIZE } from './constants';
+import { canvas, INITIAL_APPLES, KeyCodeMap, RECT_SIZE } from './constants';
 import { draw } from './draw';
 import { loadLevel } from './level';
 import { moveSnake, addApple } from './logic';
-import { State } from './types';
+import { Control, State } from './types';
 
 const state: State = {
   dimensions: { height: 0, width: 0 },
@@ -10,13 +10,25 @@ const state: State = {
   snakes: [
     {
       body: [
-        { x: 3, y: 1 },
-        { x: 4, y: 1 },
-        { x: 5, y: 1 },
+        { x: 3, y: 2 },
+        { x: 4, y: 2 },
+        { x: 5, y: 2 },
       ],
       directions: ['right'],
       isAlive: true,
-      color: 'black',
+      color: 'blue',
+      control: 'arrow',
+    },
+    {
+      body: [
+        { x: 3, y: 28 },
+        { x: 4, y: 28 },
+        { x: 5, y: 28 },
+      ],
+      directions: ['right'],
+      isAlive: true,
+      color: 'yellow',
+      control: 'awsd',
     },
   ],
   apples: [],
@@ -38,16 +50,28 @@ const mainLoop = () => {
 
 const main = () => {
   window.addEventListener('keydown', (e: KeyboardEvent) => {
-    const latestInput = state.snakes[0].directions[state.snakes[0].directions.length - 1];
+    let control: 'arrow' | 'awsd' | void;
+    if (Object.keys(KeyCodeMap.arrow).includes(e.code)) {
+      control = 'arrow';
+    } else if (Object.keys(KeyCodeMap.awsd).includes(e.code)) {
+      control = 'awsd';
+    }
+
+    const snake = state.snakes.find((snake) => snake.control === control);
+    if (!control || !snake) {
+      return;
+    }
+
+    const latestInput = snake.directions[snake.directions.length - 1];
     const isHorizontal = latestInput === 'left' || latestInput === 'right';
-    if (e.code == 'ArrowUp' && isHorizontal) {
-      state.snakes[0].directions.push('up');
-    } else if (e.code == 'ArrowDown' && isHorizontal) {
-      state.snakes[0].directions.push('down');
-    } else if (e.code == 'ArrowRight' && !isHorizontal) {
-      state.snakes[0].directions.push('right');
-    } else if (e.code == 'ArrowLeft' && !isHorizontal) {
-      state.snakes[0].directions.push('left');
+
+    const direction = KeyCodeMap[control][e.code];
+    console.log(e.code);
+
+    if (['up', 'down'].includes(direction) && isHorizontal) {
+      snake.directions.push(direction);
+    } else if (['left', 'right'].includes(direction) && !isHorizontal) {
+      snake.directions.push(direction);
     }
   });
 
