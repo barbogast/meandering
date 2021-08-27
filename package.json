@@ -10,6 +10,6 @@
   },
   "scripts": {
     "start": "snowpack dev",
-    "build": "snowpack build"
+    "build": "snowpack build && touch ./docs/.nojekyll"
   }
 }
