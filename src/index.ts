@@ -1,7 +1,7 @@
 import { canvas, INITIAL_APPLES, KeyCodeMap, RECT_SIZE } from './constants';
 import { draw } from './draw';
 import { loadLevel } from './level';
-import { moveSnake, addApple } from './logic';
+import { moveSnake, addApple, controlAiSnake } from './logic';
 import { Control, State } from './types';
 
 const state: State = {
@@ -30,6 +30,28 @@ const state: State = {
       color: 'yellow',
       control: 'awsd',
     },
+    {
+      body: [
+        { x: 3, y: 7 },
+        { x: 4, y: 7 },
+        { x: 5, y: 7 },
+      ],
+      directions: ['right'],
+      isAlive: true,
+      color: 'red',
+      control: 'ai',
+    },
+    {
+      body: [
+        { x: 3, y: 21 },
+        { x: 4, y: 21 },
+        { x: 5, y: 21 },
+      ],
+      directions: ['right'],
+      isAlive: true,
+      color: 'red',
+      control: 'ai',
+    },
   ],
   apples: [],
 };
@@ -42,6 +64,9 @@ const mainLoop = () => {
   }
   if (counter % 8 === 0) {
     for (const snake of state.snakes) {
+      if (snake.control === 'ai') {
+        controlAiSnake(state, snake);
+      }
       moveSnake(state, snake);
     }
   }

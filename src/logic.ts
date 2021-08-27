@@ -114,3 +114,20 @@ export const addApple = (state: State) => {
 
   state.apples.push(apple);
 };
+
+export const controlAiSnake = (state: State, snake: Snake) => {
+  if (!snake.isAlive) {
+    return;
+  }
+
+  const isHorizontal = ['left', 'right'].includes(snake.directions[0]);
+  const newHead = getNextHeadPosition(state, snake);
+  if (snakeWillDie(state, newHead)) {
+    snake.directions[0] = isHorizontal ? 'down' : 'left';
+  }
+
+  const newHead2 = getNextHeadPosition(state, snake);
+  if (snakeWillDie(state, newHead2)) {
+    snake.directions[0] = isHorizontal ? 'up' : 'right';
+  }
+};
