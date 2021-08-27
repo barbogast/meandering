@@ -43,9 +43,9 @@ const getNextHeadPosition = (state: State, snake: Snake) => {
 
 const snakeWillDie = (state: State, newHead: Pos) =>
   state.blocks.some((pos) => pos.x === newHead.x && pos.y === newHead.y) ||
-  state.snakes.some((snake) =>
-    snake.body.some((pos) => pos.x === newHead.x && pos.y === newHead.y)
-  );
+  state.snakes
+    .filter((snake) => snake.isAlive)
+    .some((snake) => snake.body.some((pos) => pos.x === newHead.x && pos.y === newHead.y));
 
 const snakeWillEat = (state: State, newHead: Pos) =>
   state.apples.some((pos) => pos.x === newHead.x && pos.y === newHead.y);
