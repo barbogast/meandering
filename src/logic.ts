@@ -51,8 +51,13 @@ export const moveSnake = (state: State, snake: Snake) => {
     state.apples = state.apples.filter((pos) => pos.x !== newHead.x || pos.y !== newHead.y);
     snake.body.push(newHead);
     addApple(state);
-  } else if (state.blocks.some((pos) => pos.x === newHead.x && pos.y === newHead.y)) {
-    /* Snake hits block and dies: 
+  } else if (
+    state.blocks.some((pos) => pos.x === newHead.x && pos.y === newHead.y) ||
+    state.snakes.some((snake) =>
+      snake.body.some((pos) => pos.x === newHead.x && pos.y === newHead.y)
+    )
+  ) {
+    /* Snake hits block, another snake or its own body and dies:
          - move one forward so the user sees which block was hit
          - kill snake
       */
