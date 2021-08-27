@@ -18,6 +18,7 @@ const state: State = {
       isAlive: true,
       color: 'blue',
       control: 'arrow',
+      nextTarget: undefined,
     },
     {
       body: [
@@ -29,6 +30,7 @@ const state: State = {
       isAlive: true,
       color: 'yellow',
       control: 'awsd',
+      nextTarget: undefined,
     },
     {
       body: [
@@ -40,6 +42,7 @@ const state: State = {
       isAlive: true,
       color: 'red',
       control: 'ai',
+      nextTarget: undefined,
     },
     {
       body: [
@@ -51,6 +54,7 @@ const state: State = {
       isAlive: true,
       color: 'red',
       control: 'ai',
+      nextTarget: undefined,
     },
   ],
   apples: [],

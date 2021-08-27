@@ -65,6 +65,7 @@ export const moveSnake = (state: State, snake: Snake) => {
     state.apples = state.apples.filter((pos) => pos.x !== newHead.x || pos.y !== newHead.y);
     snake.body.push(newHead);
     addApple(state);
+    snake.nextTarget = undefined;
   } else if (snakeWillDie(state, newHead)) {
     /* - move one forward so the user sees which block was hit
        - kill snake
@@ -115,12 +116,61 @@ export const addApple = (state: State) => {
   state.apples.push(apple);
 };
 
+const findNextApple = (state: State, snake: Snake): Pos => {
+  const head = snake.body[snake.body.length - 1];
+
+  let smallestDistance = 9999999;
+  let nearestApple;
+  for (const apple of state.apples) {
+    // √[(x₂ - x₁)² + (y₂ - y₁)²]
+    const dist = Math.sqrt((apple.x - head.x) ** 2 + (apple.y - head.y) ** 2);
+    if (dist < smallestDistance) {
+      smallestDistance = dist;
+      nearestApple = apple;
+    }
+  }
+
+  if (!nearestApple) {
+    throw new Error('Couldnt find apple');
+  }
+  return nearestApple;
+};
+
+const moveTowardsTarget = (state: State, snake: Snake) => {
+  const isHorizontal = ['left', 'right'].includes(snake.directions[0]);
+  const currentHead = snake.body[snake.body.length - 1];
+  const newHead = getNextHeadPosition(state, snake);
+
+  // Get a new target if the snake had none or reached the previous one
+  if (
+    !snake.nextTarget ||
+    (currentHead.x === snake.nextTarget.x && currentHead.y === snake.nextTarget.y)
+  ) {
+    snake.nextTarget = findNextApple(state, snake);
+  }
+
+  // Is the current direction okay?
+  if (isHorizontal) {
+    // Switch direction if the distance to the target would increase with the next step
+    if (Math.abs(newHead.x - snake.nextTarget.x) >= Math.abs(currentHead.x - snake.nextTarget.x)) {
+      snake.directions[0] = currentHead.y - snake.nextTarget.y > 0 ? 'up' : 'down';
+    }
+  } else {
+    if (Math.abs(newHead.y - snake.nextTarget.y) >= Math.abs(currentHead.y - snake.nextTarget.y)) {
+      snake.directions[0] = currentHead.x - snake.nextTarget.x > 0 ? 'left' : 'right';
+    }
+  }
+};
+
 export const controlAiSnake = (state: State, snake: Snake) => {
   if (!snake.isAlive) {
     return;
   }
 
   const isHorizontal = ['left', 'right'].includes(snake.directions[0]);
+
+  moveTowardsTarget(state, snake);
+
   const newHead = getNextHeadPosition(state, snake);
   if (snakeWillDie(state, newHead)) {
     snake.directions[0] = isHorizontal ? 'down' : 'left';

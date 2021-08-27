@@ -11,6 +11,7 @@ export type Snake = {
   isAlive: boolean;
   color: string;
   control: Control;
+  nextTarget: Pos | void;
 };
 
 export type State = {
