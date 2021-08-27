@@ -1,4 +1,4 @@
-import { canvas, INITIAL_APPLES, KeyCodeMap, RECT_SIZE } from './constants';
+import { BACKGROUND_COLOR, canvas, INITIAL_APPLES, KeyCodeMap, RECT_SIZE } from './constants';
 import { draw } from './draw';
 import { loadLevel } from './level';
 import { moveSnake, addApple, controlAiSnake } from './logic';
@@ -110,6 +110,7 @@ const main = () => {
   }
   canvas.setAttribute('height', String(state.dimensions.height * RECT_SIZE));
   canvas.setAttribute('width', String(state.dimensions.width * RECT_SIZE));
+  canvas.style.background = BACKGROUND_COLOR;
 
   mainLoop();
 };

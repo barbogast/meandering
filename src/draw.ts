@@ -1,4 +1,4 @@
-import { ctx, RECT_SIZE, WIDTH, HEIGHT } from './constants';
+import { ctx, RECT_SIZE, WIDTH, HEIGHT, BACKGROUND_COLOR } from './constants';
 import { Pos, State } from './types';
 
 export const drawRect = (pos: Pos, color: string, fill: string | void) => {
@@ -6,7 +6,7 @@ export const drawRect = (pos: Pos, color: string, fill: string | void) => {
   ctx.fillRect(pos.x * RECT_SIZE, pos.y * RECT_SIZE, RECT_SIZE, RECT_SIZE);
 
   const width = RECT_SIZE * 0.1;
-  ctx.fillStyle = fill ? fill : 'lightgrey';
+  ctx.fillStyle = fill ? fill : BACKGROUND_COLOR;
   ctx.fillRect(
     pos.x * RECT_SIZE + width,
     pos.y * RECT_SIZE + width,
