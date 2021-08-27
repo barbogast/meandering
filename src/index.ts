@@ -2,7 +2,7 @@ import { canvas, INITIAL_APPLES, KeyCodeMap, RECT_SIZE } from './constants';
 import { draw } from './draw';
 import { loadLevel } from './level';
 import { moveSnake, addApple, controlAiSnake } from './logic';
-import { Control, State } from './types';
+import { State } from './types';
 
 const state: State = {
   dimensions: { height: 0, width: 0 },
