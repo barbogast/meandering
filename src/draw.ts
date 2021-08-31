@@ -1,4 +1,4 @@
-import { ctx, RECT_SIZE, WIDTH, HEIGHT, BACKGROUND_COLOR } from './constants';
+import { ctx, RECT_SIZE, BACKGROUND_COLOR } from './constants';
 import { Pos, State } from './types';
 
 export const drawRect = (pos: Pos, color: string, fill: string | void) => {
@@ -16,7 +16,7 @@ export const drawRect = (pos: Pos, color: string, fill: string | void) => {
 };
 
 export const draw = (state: State) => {
-  ctx.clearRect(0, 0, WIDTH * RECT_SIZE, HEIGHT * RECT_SIZE);
+  ctx.clearRect(0, 0, state.dimensions.width * RECT_SIZE, state.dimensions.height * RECT_SIZE);
 
   for (const pos of state.blocks) {
     drawRect(pos, 'grey', 'grey');

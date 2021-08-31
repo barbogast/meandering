@@ -1,7 +1,5 @@
 import { Direction } from './types';
 
-export const HEIGHT = 50;
-export const WIDTH = 50;
 export const RECT_SIZE = 15;
 export const INITIAL_APPLES = 10;
 export const BACKGROUND_COLOR = 'lightgrey';
